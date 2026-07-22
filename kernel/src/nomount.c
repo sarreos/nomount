@@ -1051,6 +1051,10 @@ static int __nomount_add_rule(const char *v_path, const char *r_path, u16 v_len,
         rule->flags |= NM_FLAG_HAS_STAT;
         rule->v_size = temp_stat.size;
         rule->v_blocks = temp_stat.blocks;
+        if (v_len >= 4 &&
+    !       memcmp(nm_get_vpath(rule) + v_len - 4, ".apk", 4)) {
+            rule->flags &= ~NM_FLAG_HAS_STAT;
+        }
         path_put(&v_path_struct);
     } else {
          rule->v_ino = (unsigned long)rule->v_hash;
